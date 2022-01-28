@@ -15,6 +15,11 @@
 COMMAND="$1"
 ARGUMENT="$2"
 
+DOSSIER_JSON="json_files/"
+DOSSIER_INSTALL="/opt/git-dox/"
+
+UPDATED_FILE="https://raw.githubusercontent.com/3xpl0it-Sh4d0w/GIT-Dox/main/git-dox.sh"
+
 REQUEST="curl -s"
 JSON_PARSE="jq -r"
 USERAGENT='"Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0"'
@@ -46,13 +51,34 @@ SCRIPT_MSG_HELP()
     printf "${LINE} ${LINE_BREACK}"
 }
 
+SCRIPT_INSTALL()
+{
+    mkdir ${DOSSIER_INSTALL}
+    curl -s ${UPDATED_FILE} >> ${DOSSIER_INSTALL}
+}
+
+SCRIPT_UNINSTALL()
+{
+    rm -rf ${DOSSIER_INSTALL}
+}
+
+SCRIPT_UPDATE()
+{
+    ${REQUEST} ${UPDATED_FILE} >> ${DOSSIER_INSTALL}
+
+    SCRIPT_BANNER
+    printf "Le script à bien été mis à jour. \n"
+}
+
 GITHUB()
 {
     ARGUMENT="$1"
     SOUS_ARGUMENT="$2"
 
-    GITHUB_API="https://api.github.com/users/"
+    GITHUB_API="https://api.github.com/users/${ARGUMENT}"
     GITHUB_TOKEN="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"
+
+    ${REQUEST} ${GITHUB_API} ${ARGUMENT} >> ${DOSSIER}${ARGUMENT}.json
 }
 
 GITLAB()
@@ -64,26 +90,11 @@ GITLAB()
     GITLAB_TOKEN="zv-BxLAM2zU2xaxS6For"
 }
 
-SCRIPT_INSTALL()
-{
-    printf "IN PROGRESS \n"
-}
-
-SCRIPT_UNINSTALL()
-{
-    printf "IN PROGRESS \n"
-}
-
-SCRIPT_UPDATE()
-{
-    FILE="https://github.com/3xpl0it-Sh4d0w/GIT-Dox/git-dox.sh"
-}
-
 EXECUTE()
 {
     if [[ ("$COMMAND" = "github") ]] || [[ ("$COMMAND" = "-GH") ]]
         then
-            GITHUB
+            GITHUB ${ARGUMENT}
 
     elif [[ ("$COMMAND" = "gitlab") ]] || [[ ("$COMMAND" = "-GL") ]]
         then

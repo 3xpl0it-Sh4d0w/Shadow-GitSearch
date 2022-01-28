@@ -3,7 +3,7 @@
 ##############################################
 # Créateur              : 3xpl0it.sh4d0w     #
 # Date de Création      : 20-01-2022 à 11:27 #
-# Date de Modification  : 28-01-2022 à 21:26 #
+# Date de Modification  : 27-01-2022 à 19:11 #
 ##############################################
 
 #################################################################
@@ -64,7 +64,7 @@ SCRIPT_UNINSTALL()
 
 SCRIPT_UPDATE()
 {
-    ${REQUEST} ${UPDATED_FILE} >> ${DOSSIER_INSTALL}
+    wget ${UPDATED_FILE} >> ${DOSSIER_INSTALL}
 
     SCRIPT_BANNER
     printf "Le script à bien été mis à jour. \n"
